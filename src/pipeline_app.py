@@ -75,6 +75,7 @@ class AsyncEventBus:
 
 
 def apply_cap(total: float, cap: float = 500.0) -> float:
+    """Cap order total at maximum threshold."""
     return min(total, cap)
 
 
