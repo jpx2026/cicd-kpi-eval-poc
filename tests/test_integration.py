@@ -31,7 +31,7 @@ def test_async_dispatch_timing_sensitivity() -> None:
         for idx in range(5):
             bus.publish(f"EVT_{idx}")
         # Fixed short sleep instead of bus.flush() can flake under CPU contention
-        time.sleep(0.25)
+        time.sleep(0.14)
         assert len(AUDIT_LOG) == 5
     finally:
         bus.close()
