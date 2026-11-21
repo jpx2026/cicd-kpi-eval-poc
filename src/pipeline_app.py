@@ -71,3 +71,7 @@ class AsyncEventBus:
     def close(self) -> None:
         self._stop.set()
         self._worker.join(timeout=1.0)
+
+
+def apply_cap(total: float, cap: float = 500.0) -> float:
+    return min(total, cap)

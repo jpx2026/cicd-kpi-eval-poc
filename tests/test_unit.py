@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.pipeline_app import LineItem, calculate_total
+from src.pipeline_app import LineItem, apply_cap, calculate_total
 
 
 def test_calculate_total_basic() -> None:
@@ -18,3 +18,7 @@ def test_calculate_total_zero_discount() -> None:
 def test_calculate_total_rejects_invalid_discount() -> None:
     with pytest.raises(ValueError):
         calculate_total([LineItem("SKU-1", 10.0, 1)], discount_pct=150.0)
+
+
+def test_apply_cap() -> None:
+    assert apply_cap(650.0, 500.0) == 500.0
