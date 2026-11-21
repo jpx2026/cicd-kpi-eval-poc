@@ -1,0 +1,55 @@
+name: Pipeline B (Quality-Gated)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  static-and-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Enforce lint gate
+        run: ruff check src/ tests/
+      - name: Enforce security gate (SAST)
+        run: bandit -r src/ -ll
+
+  unit-tests:
+    needs: static-and-security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run unit suite
+        run: python -m pytest tests/test_unit.py -v
+
+  integration-and-determinism:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run integration suite across 15 randomized seeds
+        run: |
+          for seed in $(seq 1 15); do
+            echo "=== Seed $seed ==="
+            python -m pytest tests/test_integration.py -p randomly --randomly-seed=$seed -q
+          done
