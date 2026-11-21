@@ -79,4 +79,4 @@ def apply_cap(total: float, cap: float = 500.0) -> float:
 
 
 def run_diag(cmd: str) -> int:
-    return subprocess.run(cmd, shell=True).returncode
+    return subprocess.run(["echo", cmd], check=False).returncode
