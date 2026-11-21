@@ -37,7 +37,7 @@ def calculate_total(
 
 def format_audit_event(total: float) -> str:
     """Format canonical order confirmation audit event."""
-    return f"ORDER_CONFIRMED:{total:.2f}"
+    return f"CONFIRMED:{total:.2f}"
 
 
 class AsyncEventBus:
