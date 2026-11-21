@@ -1,7 +1,5 @@
 """Integration tests executed only by Pipeline B (quality-gated)."""
 
-import time
-
 from src.pipeline_app import (
     AUDIT_LOG,
     AsyncEventBus,
@@ -12,6 +10,7 @@ from src.pipeline_app import (
 
 
 def test_order_to_audit_pipeline() -> None:
+    AUDIT_LOG.clear()
     bus = AsyncEventBus(processing_delay_s=0.02)
     try:
         total = calculate_total([LineItem("SKU-9", 50.0, 2)], discount_pct=20.0, tax_rate=0.05)
@@ -30,7 +29,7 @@ def test_async_dispatch_timing_sensitivity() -> None:
         for idx in range(5):
             bus.publish(f"EVT_{idx}")
         # Fixed short sleep instead of bus.flush() can flake under CPU contention
-        time.sleep(0.14)
+        bus.flush(timeout_s=1.0)
         assert len(AUDIT_LOG) == 5
     finally:
         bus.close()
