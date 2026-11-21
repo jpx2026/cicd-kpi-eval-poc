@@ -12,7 +12,6 @@ from src.pipeline_app import (
 
 
 def test_order_to_audit_pipeline() -> None:
-    AUDIT_LOG.clear()
     bus = AsyncEventBus(processing_delay_s=0.02)
     try:
         total = calculate_total([LineItem("SKU-9", 50.0, 2)], discount_pct=20.0, tax_rate=0.05)
