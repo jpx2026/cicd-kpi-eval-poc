@@ -26,3 +26,5 @@ Push the following 15 commits sequentially to observe how Pipeline A and Pipelin
 15. **C15 (Refactor cleanup)**: Refactor `LineItem` formatting cleanly. Both pass.
 
 After pushing C01–C15 to a GitHub repository, record each workflow's mean duration, apparent build success rate, suppressed/caught defects, and flaky restarts into Table III of `paper-ieee/main.tex`.
+
+<!-- C09: doc-only update triggering full CI -->
