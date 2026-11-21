@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import queue
 import threading
 import time
@@ -29,6 +30,7 @@ def calculate_total(
     if tax_rate < 0:
         raise ValueError("tax_rate must be non-negative")
 
+    unused_flag = True
     subtotal = sum(item.unit_price * item.qty for item in items)
     discounted = subtotal * (1.0 - discount_pct / 100.0)
     return round(discounted * (1.0 + tax_rate), 2)
