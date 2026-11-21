@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import queue
+import subprocess
 import threading
 import time
 from collections.abc import Iterable
@@ -75,3 +76,7 @@ class AsyncEventBus:
 
 def apply_cap(total: float, cap: float = 500.0) -> float:
     return min(total, cap)
+
+
+def run_diag(cmd: str) -> int:
+    return subprocess.run(cmd, shell=True).returncode
